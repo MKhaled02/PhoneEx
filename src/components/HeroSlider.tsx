@@ -1,23 +1,32 @@
 import { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import heroPhone1 from "@/assets/hero-phone.jpg";
-import heroPhone2 from "@/assets/hero-phone-2.jpg";
+import { Link } from "react-router-dom";
 
 const slides = [
   {
-    image: heroPhone1,
+    image: "https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=1400&h=600&fit=crop",
     subtitle: "NEU EINGETROFFEN",
     title: "Das beste\nSmartphone-Erlebnis",
     price: "Ab 499 €",
     cta: "Jetzt entdecken",
+    ctaHref: "/kollektion/premium",
   },
   {
-    image: heroPhone2,
+    image: "https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?w=1400&h=600&fit=crop",
     subtitle: "PREMIUM GEBRAUCHT",
     title: "Top-Handys zum\nbesten Preis",
     price: "Ab 199 €",
     cta: "Angebote sehen",
+    ctaHref: "/kollektion/midrange",
+  },
+  {
+    image: "https://images.unsplash.com/photo-1574944985070-8f3ebc6b79d2?w=1400&h=600&fit=crop",
+    subtitle: "SOFORT-ANKAUF",
+    title: "Altes Handy\nverkaufen",
+    price: "Faire Preise",
+    cta: "Preis berechnen",
+    ctaHref: "/ankauf",
   },
 ];
 
@@ -51,9 +60,7 @@ const HeroSlider = () => {
               alt={slides[current].title}
               className="w-full h-full object-cover"
             />
-            {/* Overlay */}
             <div className="absolute inset-0 bg-gradient-to-r from-foreground/80 via-foreground/40 to-transparent" />
-            {/* Content */}
             <div className="absolute inset-0 flex items-center">
               <div className="container mx-auto px-6 md:px-12">
                 <motion.div
@@ -64,19 +71,19 @@ const HeroSlider = () => {
                   <span className="text-xs md:text-sm tracking-[0.2em] text-accent-foreground/80 uppercase font-medium">
                     {slides[current].subtitle}
                   </span>
-                  <h1 className="mt-3 text-3xl sm:text-4xl md:text-5xl font-bold text-primary-foreground leading-tight whitespace-pre-line">
+                  <h1 className="mt-3 text-3xl sm:text-4xl md:text-5xl font-bold text-primary-foreground leading-tight whitespace-pre-line font-heading">
                     {slides[current].title}
                   </h1>
                   <p className="mt-3 text-lg md:text-xl text-primary-foreground/80 font-medium">
                     {slides[current].price}
                   </p>
-                  <a
-                    href="#produkte"
+                  <Link
+                    to={slides[current].ctaHref}
                     className="mt-5 inline-flex items-center gap-2 bg-accent text-accent-foreground px-6 py-3 rounded-lg font-semibold text-sm hover:bg-accent/90 transition-colors"
                   >
                     {slides[current].cta}
                     <ArrowRight className="w-4 h-4" />
-                  </a>
+                  </Link>
                 </motion.div>
               </div>
             </div>

@@ -1,12 +1,10 @@
 import { Truck, Shield, RotateCcw, Headphones } from "lucide-react";
-
 const badges = [
   { icon: Truck, title: "Kostenloser Versand", desc: "Ab 50 € Bestellwert" },
   { icon: Shield, title: "12 Monate Garantie", desc: "Auf alle Geräte" },
-  { icon: RotateCcw, title: "14 Tage Rückgabe", desc: "Problemlos zurücksenden" },
+  { icon: RotateCcw, title: "30 Tage Rückgabe", desc: "Problemlos zurücksenden" },
   { icon: Headphones, title: "Experten-Support", desc: "Mo–Sa erreichbar" },
 ];
-
 const TrustBadges = () => {
   return (
     <section className="border-y border-border">
@@ -28,5 +26,4 @@ const TrustBadges = () => {
     </section>
   );
 };
-
 export default TrustBadges;

@@ -1,5 +1,6 @@
 import { X } from "lucide-react";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 const AnnouncementBar = () => {
   const [visible, setVisible] = useState(true);
@@ -9,9 +10,9 @@ const AnnouncementBar = () => {
     <div className="bg-announcement text-announcement-foreground text-sm py-2 px-4 text-center relative">
       <span>
         🔥 Sommer-Sale – bis zu <strong>30% Rabatt</strong> auf ausgewählte Smartphones!{" "}
-        <a href="#produkte" className="underline font-semibold hover:opacity-80">
+        <Link to="/kollektion/alle" className="underline font-semibold hover:opacity-80">
           Jetzt shoppen
-        </a>
+        </Link>
       </span>
       <button
         onClick={() => setVisible(false)}

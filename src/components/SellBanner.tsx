@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { ArrowRight, Smartphone } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const SellBanner = () => {
   return (
@@ -18,13 +19,13 @@ const SellBanner = () => {
             Erhalte sofort eine Bewertung und verkaufe dein gebrauchtes Smartphone schnell und einfach.
             Faire Preise garantiert.
           </p>
-          <a
-            href="#ankauf"
+          <Link
+            to="/ankauf"
             className="mt-5 inline-flex items-center gap-2 bg-accent text-accent-foreground px-6 py-3 rounded-lg font-semibold text-sm hover:bg-accent/90 transition-colors"
           >
             Handy bewerten lassen
             <ArrowRight className="w-4 h-4" />
-          </a>
+          </Link>
         </div>
         <div className="w-24 h-24 md:w-32 md:h-32 rounded-full bg-accent/20 flex items-center justify-center shrink-0">
           <Smartphone className="w-12 h-12 md:w-16 md:h-16 text-accent" />

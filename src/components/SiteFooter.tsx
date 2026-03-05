@@ -1,4 +1,5 @@
 import { Phone, Mail, MapPin } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const SiteFooter = () => {
   return (
@@ -7,9 +8,9 @@ const SiteFooter = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Brand */}
           <div>
-            <span className="font-heading text-xl font-bold text-primary-foreground">PHONIX</span>
+            <Link to="/" className="font-heading text-xl font-bold text-primary-foreground">PHONIX</Link>
             <p className="mt-3 text-sm text-footer-foreground/70 max-w-xs">
-              Dein Partner für Smartphone An- und Verkauf. Neue und gebrauchte Geräte zu fairen Preisen.
+              Dein Partner für Smartphone An- und Verkauf. Geprüfte Geräte zu fairen Preisen mit 12 Monaten Garantie.
             </p>
           </div>
 
@@ -17,10 +18,10 @@ const SiteFooter = () => {
           <div>
             <h4 className="font-semibold text-primary-foreground text-sm mb-3">Shop</h4>
             <ul className="space-y-2 text-sm">
-              <li><a href="#" className="hover:text-primary-foreground transition-colors">Smartphones</a></li>
-              <li><a href="#" className="hover:text-primary-foreground transition-colors">Tablets</a></li>
-              <li><a href="#" className="hover:text-primary-foreground transition-colors">Zubehör</a></li>
-              <li><a href="#" className="hover:text-primary-foreground transition-colors">Angebote</a></li>
+              <li><Link to="/kollektion/alle" className="hover:text-primary-foreground transition-colors">Alle Smartphones</Link></li>
+              <li><Link to="/kollektion/premium" className="hover:text-primary-foreground transition-colors">Premium</Link></li>
+              <li><Link to="/kollektion/midrange" className="hover:text-primary-foreground transition-colors">Mittelklasse</Link></li>
+              <li><Link to="/kollektion/budget" className="hover:text-primary-foreground transition-colors">Budget</Link></li>
             </ul>
           </div>
 
@@ -28,8 +29,8 @@ const SiteFooter = () => {
           <div>
             <h4 className="font-semibold text-primary-foreground text-sm mb-3">Service</h4>
             <ul className="space-y-2 text-sm">
-              <li><a href="#" className="hover:text-primary-foreground transition-colors">Handy verkaufen</a></li>
-              <li><a href="#" className="hover:text-primary-foreground transition-colors">Reparatur</a></li>
+              <li><Link to="/ankauf" className="hover:text-primary-foreground transition-colors">Handy verkaufen</Link></li>
+              <li><Link to="/warenkorb" className="hover:text-primary-foreground transition-colors">Warenkorb</Link></li>
               <li><a href="#" className="hover:text-primary-foreground transition-colors">Versand & Lieferung</a></li>
               <li><a href="#" className="hover:text-primary-foreground transition-colors">FAQ</a></li>
             </ul>
