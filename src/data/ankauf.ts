@@ -32,11 +32,11 @@ export interface ConditionOption {
 }
 
 export const CONDITIONS: ConditionOption[] = [
-  { key: "Wie Neu", label: "Wie Neu", multiplier: 1.0, description: "Keine sichtbaren Gebrauchsspuren", icon: "✨" },
-  { key: "Sehr Gut", label: "Sehr Gut", multiplier: 0.87, description: "Minimale Gebrauchsspuren", icon: "👍" },
-  { key: "Gut", label: "Gut", multiplier: 0.72, description: "Leichte Kratzer sichtbar", icon: "👌" },
-  { key: "Akzeptabel", label: "Akzeptabel", multiplier: 0.55, description: "Deutliche Gebrauchsspuren", icon: "🔧" },
-  { key: "Defekt", label: "Defekt", multiplier: 0.28, description: "Funktionseinschränkungen", icon: "⚠️" },
+  { key: "Wie Neu", label: "Wie Neu", multiplier: 1.0, description: "Keine sichtbaren Gebrauchsspuren", icon: "" },
+  { key: "Sehr Gut", label: "Sehr Gut", multiplier: 0.87, description: "Minimale Gebrauchsspuren", icon: "" },
+  { key: "Gut", label: "Gut", multiplier: 0.72, description: "Leichte Kratzer sichtbar", icon: "" },
+  { key: "Akzeptabel", label: "Akzeptabel", multiplier: 0.55, description: "Deutliche Gebrauchsspuren", icon: "" },
+  { key: "Defekt", label: "Defekt", multiplier: 0.28, description: "Funktionseinschränkungen", icon: "" },
 ];
 
 export interface DefectOption {
@@ -47,14 +47,14 @@ export interface DefectOption {
 }
 
 export const DEFECTS: DefectOption[] = [
-  { key: "display_kratzer", label: "Display-Kratzer", deduction: 15, icon: "📱" },
-  { key: "display_riss", label: "Display-Riss", deduction: 60, icon: "💥" },
-  { key: "akku_schwach", label: "Akku schwach", deduction: 30, icon: "🔋" },
-  { key: "kamera_defekt", label: "Kamera defekt", deduction: 50, icon: "📷" },
-  { key: "lautsprecher", label: "Lautsprecher", deduction: 25, icon: "🔊" },
-  { key: "ladebuchse", label: "Ladebuchse", deduction: 35, icon: "🔌" },
-  { key: "wasserschaden", label: "Wasserschaden", deduction: 80, icon: "💧" },
-  { key: "rahmen", label: "Rahmen beschädigt", deduction: 20, icon: "🔨" },
+  { key: "display_kratzer", label: "Display-Kratzer", deduction: 15, icon: "" },
+  { key: "display_riss", label: "Display-Riss", deduction: 60, icon: "" },
+  { key: "akku_schwach", label: "Akku schwach", deduction: 30, icon: "" },
+  { key: "kamera_defekt", label: "Kamera defekt", deduction: 50, icon: "" },
+  { key: "lautsprecher", label: "Lautsprecher", deduction: 25, icon: "" },
+  { key: "ladebuchse", label: "Ladebuchse", deduction: 35, icon: "" },
+  { key: "wasserschaden", label: "Wasserschaden", deduction: 80, icon: "" },
+  { key: "rahmen", label: "Rahmen beschädigt", deduction: 20, icon: "" },
 ];
 
 export function calculateAnkaufPrice(

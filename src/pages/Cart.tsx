@@ -41,7 +41,7 @@ const CartPage = () => {
           >
             <ShoppingCart className="w-16 h-16 text-muted-foreground/20 mx-auto mb-4" />
             <p className="text-lg text-muted-foreground mb-6">Noch nichts im Warenkorb.</p>
-            <Button onClick={() => navigate("/kollektion/alle")} size="lg">
+            <Button onClick={() => navigate("/smartphones/alle")} size="lg">
               Jetzt einkaufen <ArrowRight className="w-4 h-4 ml-1" />
             </Button>
           </motion.div>
@@ -50,11 +50,11 @@ const CartPage = () => {
             {/* Items */}
             <div className="lg:col-span-2">
               {/* Free shipping bar */}
-              <div className={`px-4 py-3 rounded-xl mb-4 text-sm font-medium ${freeShipping ? "bg-emerald-50 text-emerald-700" : "bg-amber-50 text-amber-700"}`}>
+              <div className="px-4 py-3 rounded-xl mb-4 text-sm font-medium bg-secondary text-foreground">
                 <div className="flex items-center gap-2 mb-1.5">
-                  <Truck className="w-4 h-4" />
+                  <Truck className="w-4 h-4 text-muted-foreground" />
                   {freeShipping
-                    ? "✅ Kostenloser Versand!"
+                    ? "Kostenloser Versand"
                     : `Noch ${(FREE_SHIPPING - cartTotal).toFixed(2)} € bis zum kostenlosen Versand`}
                 </div>
                 {!freeShipping && <Progress value={(cartTotal / FREE_SHIPPING) * 100} className="h-1.5" />}
@@ -128,7 +128,7 @@ const CartPage = () => {
                   </div>
                   <div className="flex justify-between text-sm">
                     <span className="text-muted-foreground">Versand</span>
-                    <span className={`font-medium ${freeShipping ? "text-emerald-600" : ""}`}>
+                    <span className="font-medium">
                       {freeShipping ? "Kostenlos" : `${shippingCost.toFixed(2)} €`}
                     </span>
                   </div>
@@ -138,10 +138,10 @@ const CartPage = () => {
                   <span className="text-base font-bold">Gesamt</span>
                   <span className="text-xl font-bold">{total.toLocaleString("de-DE")} €</span>
                 </div>
-                <Button className="w-full mb-3" size="lg">
+                <Button className="w-full mb-3" size="lg" onClick={() => navigate("/kasse")}>
                   Zur Kasse <ArrowRight className="w-4 h-4 ml-1" />
                 </Button>
-                <Button variant="outline" className="w-full" onClick={() => navigate("/kollektion/alle")}>
+                <Button variant="outline" className="w-full" onClick={() => navigate("/smartphones/alle")}>
                   Weiter einkaufen
                 </Button>
                 <div className="flex gap-2 justify-center mt-4">

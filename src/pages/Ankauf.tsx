@@ -1,19 +1,28 @@
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { CheckCircle2, ArrowRight } from "lucide-react";
 import { ANKAUF_MODELS, CONDITIONS, DEFECTS, calculateAnkaufPrice } from "@/data/ankauf";
+import { useAnkauf } from "@/context/AnkaufContext";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 
 const AnkaufPage = () => {
+  const { addRequest } = useAnkauf();
   const [model, setModel] = useState("");
   const [storage, setStorage] = useState("");
   const [condition, setCondition] = useState("");
   const [defects, setDefects] = useState<string[]>([]);
   const [submitted, setSubmitted] = useState(false);
+  const [showContactForm, setShowContactForm] = useState(false);
+  const [sellerName, setSellerName] = useState("");
+  const [sellerEmail, setSellerEmail] = useState("");
+  const [sellerPhone, setSellerPhone] = useState("");
+  const [payoutMethod, setPayoutMethod] = useState<"bank_transfer" | "paypal">("bank_transfer");
+  const [paypalEmail, setPaypalEmail] = useState("");
+  const [iban, setIban] = useState("");
 
   const models = Object.keys(ANKAUF_MODELS);
   const storages = model ? Object.keys(ANKAUF_MODELS[model] || {}) : [];
@@ -37,19 +46,21 @@ const AnkaufPage = () => {
         <SiteHeader />
         <main className="container mx-auto px-4 py-20 max-w-lg text-center">
           <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}>
-            <div className="w-20 h-20 rounded-full bg-emerald-50 border-2 border-emerald-200 flex items-center justify-center mx-auto mb-6">
-              <CheckCircle2 className="w-10 h-10 text-emerald-600" />
+            <div className="w-16 h-16 border-2 border-foreground rounded-full flex items-center justify-center mx-auto mb-6">
+              <CheckCircle2 className="w-8 h-8 text-foreground" />
             </div>
             <h1 className="text-2xl font-bold font-heading mb-3">Anfrage eingegangen!</h1>
             <p className="text-muted-foreground mb-2">
-              Dein <strong className="text-foreground">{model} ({storage})</strong> wurde für{" "}
-              <strong className="text-foreground">{price} €</strong> zum Ankauf vorgemerkt.
+              Hallo <strong className="text-foreground">{sellerName}</strong>, dein{" "}
+              <strong className="text-foreground">{model} ({storage})</strong> wurde für{" "}
+              <strong className="text-foreground">{price} €</strong> zum Ankauf vorgemerkt. Wir kontaktieren dich unter{" "}
+              <strong className="text-foreground">{sellerEmail}</strong>.
             </p>
             <p className="text-sm text-muted-foreground mb-8">
-              Du erhältst in Kürze eine E-Mail mit deinem kostenlosen Versandlabel. Nach Eingang und Prüfung wird der Betrag innerhalb von 24h ausgezahlt.
+              Du erhältst in Kürze eine E-Mail mit deinem kostenlosen Versandlabel. Nach Eingang und Prüfung wird der Betrag innerhalb von 1-3 Werktagen ausgezahlt.
             </p>
             <div className="flex gap-3 justify-center">
-              <Button variant="outline" onClick={() => { setSubmitted(false); setModel(""); setStorage(""); setCondition(""); setDefects([]); }}>
+              <Button variant="outline" onClick={() => { setSubmitted(false); setShowContactForm(false); setSellerName(""); setSellerEmail(""); setSellerPhone(""); setModel(""); setStorage(""); setCondition(""); setDefects([]); setIban(""); setPaypalEmail(""); }}>
                 Weiteres Gerät verkaufen
               </Button>
               <Button asChild>
@@ -75,11 +86,27 @@ const AnkaufPage = () => {
         </nav>
 
         <div className="text-center mb-10">
-          <span className="inline-block px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-bold uppercase tracking-wider mb-3">
-            💰 Automatische Preisberechnung
+          <span className="inline-block px-3 py-1 rounded-full bg-secondary border border-border text-foreground text-xs font-medium uppercase tracking-wider mb-3">
+            Automatische Preisberechnung
           </span>
           <h1 className="text-3xl font-bold font-heading text-foreground mb-2">Handy verkaufen</h1>
           <p className="text-muted-foreground">Wähle dein Gerät und erhalte sofort deinen Ankaufpreis.</p>
+        </div>
+
+        {/* Warum bei PHONIX verkaufen */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 max-w-5xl mx-auto mb-10">
+          {[
+            { icon: "💶", title: "Faire Preise", text: "Marktgerechte Ankaufpreise, keine versteckten Abzüge" },
+            { icon: "📦", title: "Kostenloser Versand", text: "Wir senden dir ein kostenloses Versandlabel zu" },
+            { icon: "⚡", title: "Schnelle Auszahlung", text: "Nach Prüfung Auszahlung innerhalb von 1-3 Werktagen" },
+            { icon: "🔒", title: "Datenschutz", text: "Professionelle Datenlöschung nach DSGVO-Standards" },
+          ].map(item => (
+            <div key={item.title} className="rounded-xl border border-border bg-card p-4 text-center">
+              <div className="text-2xl mb-2">{item.icon}</div>
+              <p className="text-sm font-semibold text-foreground mb-1">{item.title}</p>
+              <p className="text-xs text-muted-foreground">{item.text}</p>
+            </div>
+          ))}
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
@@ -192,7 +219,7 @@ const AnkaufPage = () => {
                     </div>
                     <div className="flex justify-between text-sm">
                       <span className="text-muted-foreground">Zustand ({condition})</span>
-                      <span className="font-semibold text-amber-600">×{condObj?.multiplier}</span>
+                      <span className="font-semibold">×{condObj?.multiplier}</span>
                     </div>
                     {totalDed > 0 && (
                       <div className="flex justify-between text-sm">
@@ -201,14 +228,112 @@ const AnkaufPage = () => {
                       </div>
                     )}
                   </div>
-                  <Button className="w-full" size="lg" onClick={() => setSubmitted(true)}>
-                    Jetzt verkaufen <ArrowRight className="w-4 h-4 ml-1" />
-                  </Button>
+                  {showContactForm ? (
+                    <div className="rounded-xl border border-border bg-background p-4 space-y-3">
+                      <p className="text-xs font-semibold text-foreground text-center mb-1">Deine Kontaktdaten</p>
+                      <input
+                        type="text"
+                        placeholder="Dein Name"
+                        value={sellerName}
+                        onChange={(e) => setSellerName(e.target.value)}
+                        className="w-full px-3 py-2 rounded-lg border border-border bg-card text-foreground placeholder:text-muted-foreground text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+                      />
+                      <input
+                        type="email"
+                        placeholder="deine@email.de"
+                        value={sellerEmail}
+                        onChange={(e) => setSellerEmail(e.target.value)}
+                        className="w-full px-3 py-2 rounded-lg border border-border bg-card text-foreground placeholder:text-muted-foreground text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+                      />
+                      <input
+                        type="tel"
+                        placeholder="+49 ..."
+                        value={sellerPhone}
+                        onChange={(e) => setSellerPhone(e.target.value)}
+                        className="w-full px-3 py-2 rounded-lg border border-border bg-card text-foreground placeholder:text-muted-foreground text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+                      />
+                      {/* Auszahlungsmethode */}
+                      <div className="space-y-2">
+                        <p className="text-xs font-semibold text-foreground">Auszahlung via</p>
+                        <div className="grid grid-cols-2 gap-2">
+                          {(["bank_transfer", "paypal"] as const).map((method) => (
+                            <button
+                              key={method}
+                              type="button"
+                              onClick={() => setPayoutMethod(method)}
+                              className={`py-2 px-3 rounded-lg border text-xs font-medium transition-all ${
+                                payoutMethod === method
+                                  ? "border-accent bg-accent/5 text-accent"
+                                  : "border-border text-muted-foreground hover:bg-secondary/50"
+                              }`}
+                            >
+                              {method === "bank_transfer" ? "Banküberweisung" : "PayPal"}
+                            </button>
+                          ))}
+                        </div>
+                        {payoutMethod === "bank_transfer" && (
+                          <input
+                            type="text"
+                            placeholder="IBAN (optional)"
+                            value={iban}
+                            onChange={(e) => setIban(e.target.value)}
+                            className="w-full px-3 py-2 rounded-lg border border-border bg-card text-foreground placeholder:text-muted-foreground text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+                          />
+                        )}
+                        {payoutMethod === "paypal" && (
+                          <input
+                            type="email"
+                            placeholder="PayPal-E-Mail"
+                            value={paypalEmail}
+                            onChange={(e) => setPaypalEmail(e.target.value)}
+                            className="w-full px-3 py-2 rounded-lg border border-border bg-card text-foreground placeholder:text-muted-foreground text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+                          />
+                        )}
+                      </div>
+                      <p className="text-[11px] text-muted-foreground">
+                        Deine Daten werden nur für die Bearbeitung deines Verkaufs verwendet. <a href="/datenschutz" className="underline hover:text-foreground">Datenschutz</a>
+                      </p>
+                      <Button
+                        className="w-full"
+                        size="lg"
+                        onClick={() => {
+                          if (sellerName.trim() && sellerEmail.trim() && sellerPhone.trim() && price !== null) {
+                            addRequest({
+                              sellerName: sellerName.trim(),
+                              sellerEmail: sellerEmail.trim(),
+                              sellerPhone: sellerPhone.trim(),
+                              deviceModel: model,
+                              deviceStorage: storage,
+                              deviceCondition: condition,
+                              deviceDefects: defects,
+                              quotedPrice: price,
+                              payoutMethod,
+                              iban: payoutMethod === "bank_transfer" ? iban.trim() || undefined : undefined,
+                              paypalEmail: payoutMethod === "paypal" ? paypalEmail.trim() || undefined : undefined,
+                            });
+                            setSubmitted(true);
+                          }
+                        }}
+                        disabled={!sellerName.trim() || !sellerEmail.trim() || !sellerPhone.trim()}
+                      >
+                        Anfrage senden <ArrowRight className="w-4 h-4 ml-1" />
+                      </Button>
+                      <button
+                        onClick={() => setShowContactForm(false)}
+                        className="w-full text-xs text-muted-foreground hover:text-foreground transition-colors text-center"
+                      >
+                        Zurück
+                      </button>
+                    </div>
+                  ) : (
+                    <Button className="w-full" size="lg" onClick={() => setShowContactForm(true)}>
+                      Jetzt verkaufen <ArrowRight className="w-4 h-4 ml-1" />
+                    </Button>
+                  )}
                   <p className="text-[10px] text-muted-foreground text-center mt-3">Preis 48h gültig · Kostenloser Versand</p>
                 </>
               ) : (
                 <div className="text-center py-10">
-                  <div className="text-5xl opacity-15 mb-3">📱</div>
                   <p className="text-sm text-muted-foreground">
                     Wähle dein Gerät für eine<br />sofortige Preisberechnung
                   </p>

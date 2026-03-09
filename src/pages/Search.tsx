@@ -32,7 +32,7 @@ const SearchPage = () => {
             <SearchIcon className="w-14 h-14 text-muted-foreground/20 mx-auto mb-4" />
             <p className="text-lg text-muted-foreground mb-6">Keine Ergebnisse für „{query}".</p>
             <Button asChild>
-              <Link to="/kollektion/alle">Alle Produkte anzeigen</Link>
+              <Link to="/smartphones/alle">Alle Produkte anzeigen</Link>
             </Button>
           </div>
         ) : (

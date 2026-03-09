@@ -1,6 +1,8 @@
-import { createContext, useContext, useState, useCallback, type ReactNode } from "react";
+import { createContext, useContext, useState, useCallback, useEffect, type ReactNode } from "react";
 import type { Product } from "@/data/products";
 import { toast } from "sonner";
+
+const CART_STORAGE_KEY = "phonix_cart";
 
 export interface CartItem extends Product {
   qty: number;
@@ -20,6 +22,38 @@ interface CartContextType {
 
 const CartContext = createContext<CartContextType | null>(null);
 
+// Warenkorb aus localStorage laden
+function loadCartFromStorage(): CartItem[] {
+  try {
+    const stored = localStorage.getItem(CART_STORAGE_KEY);
+    if (stored) {
+      const parsed = JSON.parse(stored);
+      // Validiere die Struktur
+      if (Array.isArray(parsed)) {
+        return parsed.filter(
+          (item) =>
+            typeof item === "object" &&
+            item !== null &&
+            typeof item.id === "number" &&
+            typeof item.qty === "number"
+        );
+      }
+    }
+  } catch (error) {
+    console.warn("Fehler beim Laden des Warenkorbs:", error);
+  }
+  return [];
+}
+
+// Warenkorb in localStorage speichern
+function saveCartToStorage(items: CartItem[]): void {
+  try {
+    localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(items));
+  } catch (error) {
+    console.warn("Fehler beim Speichern des Warenkorbs:", error);
+  }
+}
+
 export function useCart() {
   const ctx = useContext(CartContext);
   if (!ctx) throw new Error("useCart must be used within CartProvider");
@@ -27,8 +61,13 @@ export function useCart() {
 }
 
 export function CartProvider({ children }: { children: ReactNode }) {
-  const [items, setItems] = useState<CartItem[]>([]);
+  const [items, setItems] = useState<CartItem[]>(() => loadCartFromStorage());
   const [isCartOpen, setCartOpen] = useState(false);
+
+  // Speichere Warenkorb bei Änderungen
+  useEffect(() => {
+    saveCartToStorage(items);
+  }, [items]);
 
   const addItem = useCallback((product: Product, qty = 1) => {
     setItems((prev) => {

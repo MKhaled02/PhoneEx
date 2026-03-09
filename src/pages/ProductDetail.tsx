@@ -28,7 +28,7 @@ const ProductDetail = () => {
         <div className="flex flex-col items-center justify-center py-32 text-center">
           <h1 className="text-2xl font-bold mb-2">Produkt nicht gefunden</h1>
           <p className="text-muted-foreground mb-6">Dieses Produkt existiert nicht oder ist nicht mehr verfügbar.</p>
-          <Button onClick={() => navigate("/kollektion/alle")}>Zurück zum Shop</Button>
+          <Button onClick={() => navigate("/smartphones/alle")}>Zurück zum Shop</Button>
         </div>
         <SiteFooter />
       </div>
@@ -47,7 +47,7 @@ const ProductDetail = () => {
         <nav className="flex items-center gap-1.5 text-sm text-muted-foreground mb-6">
           <Link to="/" className="hover:text-foreground">Startseite</Link>
           <span>/</span>
-          <Link to="/kollektion/alle" className="hover:text-foreground">Smartphones</Link>
+          <Link to="/smartphones/alle" className="hover:text-foreground">Smartphones</Link>
           <span>/</span>
           <span className="text-foreground font-medium truncate">{product.title}</span>
         </nav>
@@ -108,10 +108,10 @@ const ProductDetail = () => {
               </span>
             </div>
             <div className="flex gap-2 mb-6">
-              <span className="text-xs font-bold text-red-600 bg-red-50 px-2 py-0.5 rounded-md">
+              <span className="text-xs font-medium text-muted-foreground">
                 -{pct}% · Spare {product.oldPrice - product.price} €
               </span>
-              <span className="text-xs font-medium text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md">
+              <span className="text-xs font-medium text-muted-foreground">
                 inkl. MwSt.
               </span>
             </div>
@@ -124,10 +124,28 @@ const ProductDetail = () => {
               </div>
               <div className="px-4 py-3 bg-secondary rounded-xl border border-border">
                 <p className="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">Batterie</p>
-                <p className={`text-sm font-bold ${product.battery >= 90 ? "text-emerald-600" : "text-amber-600"}`}>
-                  🔋 {product.battery}%
+                <p className="text-sm font-bold text-foreground">
+                  {product.battery}%
                 </p>
               </div>
+            </div>
+
+            {/* Trust Signale */}
+            <div className="grid grid-cols-2 gap-3 mt-4 mb-6">
+              {[
+                { icon: "✓", label: "12 Monate Garantie", sub: "Auf alle Geräte" },
+                { icon: "↩", label: "30 Tage Rückgabe", sub: "Kostenlos & unkompliziert" },
+                { icon: "🔒", label: "SSL-verschlüsselt", sub: "Sichere Bezahlung" },
+                { icon: "⚡", label: "1-3 Tage Lieferung", sub: "DHL versichert" },
+              ].map(item => (
+                <div key={item.label} className="flex items-start gap-2 p-3 rounded-lg bg-secondary/50">
+                  <span className="text-sm font-bold text-accent mt-0.5">{item.icon}</span>
+                  <div>
+                    <p className="text-xs font-semibold text-foreground">{item.label}</p>
+                    <p className="text-[11px] text-muted-foreground">{item.sub}</p>
+                  </div>
+                </div>
+              ))}
             </div>
 
             {/* Qty + Add to Cart */}
@@ -153,15 +171,15 @@ const ProductDetail = () => {
               <button
                 onClick={() => setLiked(!liked)}
                 className={`w-12 h-12 rounded-xl border flex items-center justify-center transition-colors ${
-                  liked ? "border-red-200 bg-red-50" : "border-border hover:bg-secondary"
+                  liked ? "border-foreground bg-secondary" : "border-border hover:bg-secondary"
                 }`}
               >
-                <Heart className={`w-5 h-5 ${liked ? "fill-red-500 text-red-500" : "text-muted-foreground"}`} />
+                <Heart className={`w-5 h-5 ${liked ? "fill-foreground text-foreground" : "text-muted-foreground"}`} />
               </button>
             </div>
 
             {product.stock <= 3 && (
-              <p className="text-xs text-red-600 font-semibold mb-4">⚡ Nur noch {product.stock} Stück verfügbar!</p>
+              <p className="text-xs text-muted-foreground font-medium mb-4">Nur noch {product.stock} Stück verfügbar</p>
             )}
 
             {/* Trust Badges */}
